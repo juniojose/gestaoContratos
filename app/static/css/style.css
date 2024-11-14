@@ -1,0 +1,234 @@
+/****************************************************/
+/* Estilização geral do corpo */
+/****************************************************/
+body {
+    font-family: "72", Arial, sans-serif;
+    margin: 0;
+    background-color: rgb(236, 238, 239);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Ajuste no main para garantir que ele preencha o espaço disponível */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/****************************************************/
+/* Estilização do cabeçalho */
+/****************************************************/
+.custom-header {
+    background-color: rgb(0, 113, 70);
+    color: white;
+    width: 100%;
+}
+
+.custom-header .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+.custom-header .logo-img {
+    height: 30px;
+    padding-left: 10px;
+}
+
+.custom-footer .top-bar .d-flex {
+    align-items: center;
+}
+
+.custom-header .navbar {
+    background-color: rgb(0, 113, 70);
+    padding: 0;
+}
+
+.custom-header .navbar .nav-link {
+    color: white;
+    font-size: 1rem;
+    padding: 5px 10px;
+}
+
+.custom-header .navbar .nav-link:hover {
+    color: #ddd;
+}
+
+/****************************************************/
+/* Estilização do rodapé */
+/****************************************************/
+.custom-footer {
+    background-color: rgb(0, 113, 70);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+/****************************************************/
+/* Card do formulário de login */
+/****************************************************/
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilização dos campos do formulário */
+.form-group {
+    padding: 0 20px;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: normal;
+    font-family: "72", Arial, sans-serif;
+}
+
+input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: "72", Arial, sans-serif;
+}
+
+/* Ajuste do botão de login */
+button {
+    background-color: rgb(0, 113, 70);
+    color: white;
+    border: none;
+    padding: 8px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: rgb(0, 90, 60);
+}
+
+a {
+    color: rgb(0, 113, 70);
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    margin-top: 0px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.navbar {
+    padding: 0;
+}
+
+/****************************************************/
+/* Estilização dos botões de miniApps */
+/****************************************************/
+.card.draggable {
+    cursor: move;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    width: 170px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding:  0px;
+}
+
+/* Estilização do texto dentro dos quadrados de aplicação */
+.card.draggable h5 {
+    font-size: 1rem;
+}
+
+.icon-bottom-left {
+    align-self: flex-start;
+    margin-top: auto;
+    font-size: 2rem;
+    color: rgba(0, 113, 70, 0.3);
+}
+
+.container {
+    padding-left: 0px !important;
+    margin-left: 0px !important;
+}
+
+#sortable {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0px;
+}
+
+.mini-app {
+    flex: 0 0 calc(10% - 0px);
+    margin-bottom: 20px;
+}
+
+.card.draggable {
+    width: 170px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/****************************************************/
+/* Estilização dos botões CRUD */
+/****************************************************/
+.action-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Botão de adicionar (plus) */
+.btn-add {
+    background-color: rgba(0, 113, 70, 0.8);
+    color: white;
+    border: none;
+}
+.btn-add:hover {
+    background-color: rgba(0, 113, 70, 0.9);
+}
+
+/* Botão de editar (pencil) */
+.btn-edit {
+    background-color: rgba(0, 113, 70, 0.6);
+    color: white;
+    border: none;
+}
+.btn-edit:hover {
+    background-color: rgba(0, 113, 70, 0.7);
+}
+
+/* Botão de excluir (trash) */
+.btn-delete {
+    background-color: rgba(0, 113, 70, 0.4);
+    color: white;
+    border: none;
+}
+.btn-delete:hover {
+    background-color: rgba(0, 113, 70, 0.5);
+}
