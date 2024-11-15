@@ -232,3 +232,60 @@ a:hover {
 .btn-delete:hover {
     background-color: rgba(0, 113, 70, 0.5);
 }
+
+/****************************************************/
+/* Estilização dos tamanhos dos campos do formulário */
+/****************************************************/
+.input-sigla {
+    max-width: 80px; /* Tamanho ajustado para 2 caracteres */
+}
+
+.input-cep {
+    max-width: 120px; /* Tamanho ajustado para CEP (8 caracteres + formatação) */
+}
+
+.input-estado {
+    max-width: 150px; /* Ajuste para estados */
+}
+
+.input-cidade,
+.input-bairro,
+.input-logradouro {
+    max-width: 300px; /* Ajuste para textos médios como cidade, bairro ou logradouro */
+}
+
+.input-numero {
+    max-width: 100px; /* Ajuste para números */
+}
+
+.input-complemento {
+    max-width: 200px; /* Ajuste para complementos */
+}
+
+/****************************************************/
+/* Ajustes adicionais para o formulário de fazendas */
+/****************************************************/
+
+/* Grupo de campos com borda suave */
+.row.border {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+/* Placeholder para o campo Sigla e CEP */
+.input-sigla,
+.input-cep,
+.input-numero {
+    text-align: center;
+}
+
+/* Botão "Salvar" com sombra */
+.btn-primary {
+    background-color: rgb(0, 113, 70);
+    border-color: rgb(0, 90, 60);
+}
+.btn-primary:hover {
+    background-color: rgb(0, 90, 60);
+    border-color: rgb(0, 75, 50);
+}
