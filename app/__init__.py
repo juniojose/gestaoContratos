@@ -39,7 +39,7 @@ def create_app():
 def configure_app(app):
     """Configura a aplicação com variáveis de ambiente."""
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'mysecret')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///users.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///dados.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 def initialize_extensions(app):
