@@ -54,5 +54,3 @@ def register_blueprints(app):
     """Registra os blueprints com a aplicação."""
     from .routes import main
     app.register_blueprint(main)
-
-from .models import Status

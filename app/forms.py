@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField
+from wtforms import StringField, SelectField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
-from .models import Status, Fazenda
+from .models import Fazenda
 
 # Formulário de Status
 class StatusForm(FlaskForm):
@@ -18,15 +18,19 @@ class FazendaForm(FlaskForm):
     fazendaLogradouro = StringField('Logradouro', validators=[Length(max=100)])
     fazendaNumero = StringField('Número', validators=[Length(max=6)])
     fazendaComplemento = StringField('Complemento', validators=[Length(max=50)])
-    statusId = IntegerField('ID do Status', validators=[DataRequired()])
+    statusId = SelectField('ID do Status', choices=[], coerce=int, validators=[DataRequired()])
     submit = SubmitField('Salvar')
+
+    def __init__(self, *args, **kwargs):
+        self.fazenda_id = kwargs.pop('fazenda_id', None)
+        super().__init__(*args, **kwargs)
 
     def validate_fazendaSigla(self, fazendaSigla):
         fazenda = Fazenda.query.filter_by(fazendaSigla=fazendaSigla.data).first()
-        if fazenda:
+        if fazenda and fazenda.fazendaId != self.fazenda_id:
             raise ValidationError('Já existe uma fazenda com essa sigla.')
 
     def validate_fazendaNome(self, fazendaNome):
         fazenda = Fazenda.query.filter_by(fazendaNome=fazendaNome.data).first()
-        if fazenda:
+        if fazenda and fazenda.fazendaId != self.fazenda_id:
             raise ValidationError('Já existe uma fazenda com esse nome.')

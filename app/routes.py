@@ -39,7 +39,7 @@ def new_status():
             db.session.rollback()
             flash('Erro: Já existe um status com essa descrição.', 'error')
             return redirect(url_for('main.new_status'))
-    return render_template('status_form.html', form=form, title='Novo Status')
+    return render_template('status_form.html', form=form, title='Cadastro de Status')
 
 # Rota para editar um status existente
 @main.route("/status/edit/<int:status_id>", methods=['GET', 'POST'])
@@ -75,6 +75,11 @@ def delete_status(status_id):
     flash('Status deletado com sucesso!', 'success')
     return redirect(url_for('main.list_status'))
 
+@main.route('/debug/fazendas')
+def debug_fazendas():
+    fazendas = Fazenda.query.all()
+    return "<br>".join([f"{f.fazendaId} - {f.fazendaNome} - {f.statusId}" for f in fazendas])
+
 @main.route("/fazendas", methods=['GET'])
 def list_fazendas():
     fazendas = Fazenda.query.all()
@@ -83,6 +88,10 @@ def list_fazendas():
 @main.route("/fazendas/new", methods=['GET', 'POST'])
 def new_fazenda():
     form = FazendaForm()
+
+    # Carregar as opções de Status do banco de dados
+    form.statusId.choices = [(status.statusId, status.statusDescricao) for status in Status.query.all()]
+
     if form.validate_on_submit():
         fazenda = Fazenda(
             fazendaSigla=form.fazendaSigla.data,
@@ -104,12 +113,16 @@ def new_fazenda():
         except IntegrityError:
             db.session.rollback()
             flash('Erro: Já existe uma fazenda com essa sigla ou nome.', 'error')
-    return render_template('fazenda_form.html', form=form, title='Nova Fazenda')
+    return render_template('fazenda_form.html', form=form, title='Cadastro de Fazenda')
 
 @main.route("/fazendas/edit/<int:fazenda_id>", methods=['GET', 'POST'])
 def edit_fazenda(fazenda_id):
     fazenda = Fazenda.query.get_or_404(fazenda_id)
-    form = FazendaForm()
+    form = FazendaForm(fazenda_id=fazenda_id)
+
+    # Popula as opções do campo statusId
+    form.statusId.choices = [(status.statusId, status.statusDescricao) for status in Status.query.all()]
+
     if form.validate_on_submit():
         fazenda.fazendaSigla = form.fazendaSigla.data
         fazenda.fazendaNome = form.fazendaNome.data
@@ -121,6 +134,7 @@ def edit_fazenda(fazenda_id):
         fazenda.fazendaNumero = form.fazendaNumero.data
         fazenda.fazendaComplemento = form.fazendaComplemento.data
         fazenda.statusId = form.statusId.data
+
         try:
             db.session.commit()
             flash('Fazenda atualizada com sucesso!', 'success')
@@ -139,6 +153,7 @@ def edit_fazenda(fazenda_id):
         form.fazendaNumero.data = fazenda.fazendaNumero
         form.fazendaComplemento.data = fazenda.fazendaComplemento
         form.statusId.data = fazenda.statusId
+
     return render_template('fazenda_form.html', form=form, title='Editar Fazenda')
 
 @main.route("/fazendas/delete/<int:fazenda_id>", methods=['POST'])

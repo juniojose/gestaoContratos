@@ -4,72 +4,80 @@
 
 {% block content %}
 <div class="container mt-4 p-4" style="background-color: #f7f7f7; border-radius: 8px;">
-    <h2>{{ title }}</h2>
     <form method="POST">
         {{ form.hidden_tag() }}
 
-        <!-- Linha 1: Sigla e Nome -->
+        <!-- Linha do Título -->
         <div class="row mb-3">
-            <div class="col-md-2">
-                {{ form.fazendaSigla.label }} 
-                {{ form.fazendaSigla(class="form-control input-sigla", placeholder="Ex: PY") }}
+            <div class="d-flex flex-column justify-content-start">
+                <h4 class="form-title">{{ title }}</h4>
+                <hr class="line-fine">
             </div>
-            <div class="col-md-10">
-                {{ form.fazendaNome.label }} 
-                {{ form.fazendaNome(class="form-control input-cidade", placeholder="Nome da Fazenda") }}
+        </div>
+
+        <!-- Linha 1: Sigla e Nome -->
+        <div class="row mb-1 ">
+            <div class="col-md-2 d-flex flex-column justify-content-start">
+                {{ form.fazendaSigla.label(class="form-label") }}
+                {{ form.fazendaSigla(class="form-control input-sigla") }}
+            </div>
+            <div class="col-md-10 d-flex flex-column justify-content-start">
+                {{ form.fazendaNome.label(class="form-label") }}
+                {{ form.fazendaNome(class="form-control input-nome") }}
             </div>
         </div>
 
         <!-- Linha 2: CEP, Estado, Cidade -->
-        <div class="row mb-3 border rounded p-3">
-            <div class="col-md-3">
-                {{ form.fazendaCEP.label }} 
-                {{ form.fazendaCEP(class="form-control input-cep", placeholder="CEP") }}
+        <div class="row mb-1">
+            <div class="col-md-2 d-flex flex-column justify-content-start">
+                {{ form.fazendaCEP.label(class="form-label") }}
+                {{ form.fazendaCEP(class="form-control input-cep") }}
             </div>
-            <div class="col-md-3">
-                {{ form.fazendaEstado.label }} 
-                {{ form.fazendaEstado(class="form-control input-estado", placeholder="Estado") }}
+            <div class="col-md-2 d-flex flex-column justify-content-start">
+                {{ form.fazendaEstado.label(class="form-label") }}
+                {{ form.fazendaEstado(class="form-control input-estado") }}
             </div>
-            <div class="col-md-6">
-                {{ form.fazendaCidade.label }} 
-                {{ form.fazendaCidade(class="form-control input-cidade", placeholder="Cidade") }}
+            <div class="col-md-8 d-flex flex-column justify-content-start">
+                {{ form.fazendaCidade.label(class="form-label") }}
+                {{ form.fazendaCidade(class="form-control input-cidade") }}
             </div>
         </div>
 
         <!-- Linha 3: Bairro, Logradouro, Número -->
-        <div class="row mb-3 border rounded p-3">
-            <div class="col-md-4">
-                {{ form.fazendaBairro.label }} 
-                {{ form.fazendaBairro(class="form-control input-bairro", placeholder="Bairro") }}
+        <div class="row mb-1">
+            <div class="col-md-4 d-flex flex-column justify-content-start">
+                {{ form.fazendaBairro.label(class="form-label") }}
+                {{ form.fazendaBairro(class="form-control input-bairro") }}
             </div>
-            <div class="col-md-5">
-                {{ form.fazendaLogradouro.label }} 
-                {{ form.fazendaLogradouro(class="form-control input-logradouro", placeholder="Logradouro") }}
+            <div class="col-md-6 d-flex flex-column justify-content-start">
+                {{ form.fazendaLogradouro.label(class="form-label") }}
+                {{ form.fazendaLogradouro(class="form-control input-logradouro") }}
             </div>
-            <div class="col-md-3">
-                {{ form.fazendaNumero.label }} 
-                {{ form.fazendaNumero(class="form-control input-numero", placeholder="Número") }}
-            </div>
-        </div>
-
-        <!-- Linha 4: Complemento -->
-        <div class="row mb-3">
-            <div class="col-md-12">
-                {{ form.fazendaComplemento.label }} 
-                {{ form.fazendaComplemento(class="form-control input-complemento", placeholder="Complemento") }}
+            <div class="col-md-2 d-flex flex-column justify-content-start">
+                {{ form.fazendaNumero.label(class="form-label") }}
+                {{ form.fazendaNumero(class="form-control input-numero") }}
             </div>
         </div>
 
-        <!-- Linha 5: Status -->
-        <div class="row mb-3">
-            <div class="col-md-12">
-                {{ form.statusId.label }} 
-                {{ form.statusId(class="form-control") }}
+        <!-- Linha 4: Complemento, Status -->
+        <div class="row mb-2">
+            <div class="col-md-8 d-flex flex-column justify-content-start">
+                {{ form.fazendaComplemento.label(class="form-label") }}
+                {{ form.fazendaComplemento(class="form-control input-complemento") }}
             </div>
+            <div class="col-md-4 d-flex flex-column justify-content-start">
+                {{ form.statusId.label(class="form-label") }}
+                {{ form.statusId(class="form-control input-status") }}
         </div>
 
-        <!-- Botão de Salvar com Sombra -->
-        <button type="submit" class="btn btn-primary w-100" style="box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">Salvar</button>
+        <!-- Botão de Salvar -->
+        <div class="row mt-3 bg-save-row">
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Salvar
+                </button>
+            </div>
+        </div>
     </form>
 </div>
 {% endblock %}
