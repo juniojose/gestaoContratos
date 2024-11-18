@@ -9,7 +9,14 @@
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.statusDescricao.label(class="form-label") }}
-            {{ form.statusDescricao(class="form-control") }}
+            {{ form.statusDescricao(class="form-control", value=form.statusDescricao.data) }}
+            {% if form.statusDescricao.errors %}
+                <div class="text-danger">
+                    {% for error in form.statusDescricao.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         <div class="form-group mt-3">
             {{ form.submit(class="btn btn-primary") }}

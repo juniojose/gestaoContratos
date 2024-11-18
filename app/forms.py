@@ -4,9 +4,16 @@ from wtforms.validators import DataRequired, Length, ValidationError
 from .models import Fazenda
 
 # Formulário de Status
+from .models import Status
+
 class StatusForm(FlaskForm):
     statusDescricao = StringField('Descrição do Status', validators=[DataRequired(), Length(max=100)])
     submit = SubmitField('Salvar')
+
+    def validate_statusDescricao(self, statusDescricao):
+        status = Status.query.filter_by(statusDescricao=statusDescricao.data).first()
+        if status:
+            raise ValidationError('Já existe um status com essa descrição.')
 
 class FazendaForm(FlaskForm):
     fazendaSigla = StringField('Sigla', validators=[DataRequired(), Length(min=2, max=2)])

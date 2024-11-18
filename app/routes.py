@@ -38,7 +38,6 @@ def new_status():
         except IntegrityError:
             db.session.rollback()
             flash('Erro: Já existe um status com essa descrição.', 'error')
-            return redirect(url_for('main.new_status'))
     return render_template('status_form.html', form=form, title='Cadastro de Status')
 
 # Rota para editar um status existente
