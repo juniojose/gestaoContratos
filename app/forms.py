@@ -41,3 +41,9 @@ class FazendaForm(FlaskForm):
         fazenda = Fazenda.query.filter_by(fazendaNome=fazendaNome.data).first()
         if fazenda and fazenda.fazendaId != self.fazenda_id:
             raise ValidationError('Já existe uma fazenda com esse nome.')
+
+class UsuariosPerfisForm(FlaskForm):
+    perfilNome = StringField('Nome do Perfil', validators=[DataRequired(), Length(max=50)])
+    perfilDescricao = StringField('Descrição do Perfil', validators=[Length(max=100)])
+    statusId = SelectField('Status', choices=[], coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Salvar')

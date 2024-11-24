@@ -29,7 +29,7 @@ class Fazenda(db.Model):
     # Relacionamento com Status
     status = db.relationship('Status', backref=db.backref('fazendas', lazy=True))
 
-class UsuarioPerfil(db.Model):
+class UsuariosPerfis(db.Model):  # Certifique-se de que o nome está correto
     __tablename__ = 'usuariosPerfis'
 
     perfilId = db.Column(db.Integer, primary_key=True)
@@ -59,4 +59,4 @@ class Usuario(db.Model):
     # Relacionamentos
     status = db.relationship('Status', backref=db.backref('usuarios', lazy=True))
     fazenda = db.relationship('Fazenda', backref=db.backref('usuarios', lazy=True))
-    perfil = db.relationship('UsuarioPerfil', backref=db.backref('usuarios', lazy=True))
+    perfil = db.relationship('UsuariosPerfis', backref=db.backref('usuarios', lazy=True))

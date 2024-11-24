@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4 p-4" style="background-color: #f7f7f7; border-radius: 8px;">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <!-- Linha do Título -->
+        <div class="row mb-3">
+            <div class="d-flex flex-column justify-content-start">
+                <h4 class="form-title">{{ title }}</h4>
+                <hr class="line-fine">
+            </div>
+        </div>
+
+        <!-- Linha 1: Nome do Perfil e Descrição -->
+        <div class="row mb-1">
+            <div class="col-md-6 d-flex flex-column justify-content-start">
+                {{ form.perfilNome.label(class="form-label") }}
+                {{ form.perfilNome(class="form-control") }}
+            </div>
+            <div class="col-md-6 d-flex flex-column justify-content-start">
+                {{ form.perfilDescricao.label(class="form-label") }}
+                {{ form.perfilDescricao(class="form-control") }}
+            </div>
+        </div>
+
+        <!-- Linha 2: Status -->
+        <div class="row mb-1">
+            <div class="col-md-12 d-flex flex-column justify-content-start">
+                {{ form.statusId.label(class="form-label") }}
+                {{ form.statusId(class="form-control") }}
+            </div>
+        </div>
+
+        <!-- Botão de Salvar -->
+        <div class="row mt-3 bg-save-row">
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
