@@ -30,10 +30,6 @@ def create_app():
     # Registra blueprints
     register_blueprints(app)
 
-    # Cria as tabelas do banco de dados
-    with app.app_context():
-        db.create_all()
-
     return app
 
 def configure_app(app):
@@ -52,5 +48,15 @@ def initialize_extensions(app):
 
 def register_blueprints(app):
     """Registra os blueprints com a aplicação."""
-    from .routes import main
-    app.register_blueprint(main)
+    from .blueprints.status_blueprint import status_bp
+    app.register_blueprint(status_bp, url_prefix='/status')  # Prefixo /status
+
+    from .blueprints.fazendas_blueprint import fazendas_bp
+    app.register_blueprint(fazendas_bp, url_prefix='/fazendas')  # Prefixo /fazenda
+
+    from .blueprints.usuariosperfis_blueprint import usuariosperfis_bp
+    app.register_blueprint(usuariosperfis_bp, url_prefix='/usuariosperfis')  # Prefixo /usuariosperfis
+
+    # Importe e registre o blueprint main_bp
+    from .blueprints.main_blueprint import main_bp
+    app.register_blueprint(main_bp, url_prefix='/')  # Sem prefixo para as rotas principais

@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <h2>Lista de Fazendas</h2>
 
-    <a href="{{ url_for('main.new_fazenda') }}" class="btn btn-add mb-3">
+    <a href="{{ url_for('fazendas.new_fazenda') }}" class="btn btn-add mb-3">
         <i class="bi bi-plus"></i> Adicionar
     </a>
 
@@ -33,10 +33,10 @@
                 <td>{{ fazenda.fazendaCidade }}</td>
                 <td>
                     <div class="d-flex align-items-center">
-                        <a href="{{ url_for('main.edit_fazenda', fazenda_id=fazenda.fazendaId) }}" class="btn btn-edit action-btn me-2">
+                        <a href="{{ url_for('fazendas.edit_fazenda', fazenda_id=fazenda.fazendaId) }}" class="btn btn-edit action-btn me-2">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <form action="{{ url_for('main.delete_fazenda', fazenda_id=fazenda.fazendaId) }}" method="POST" style="display: inline;">
+                        <form action="{{ url_for('fazendas.delete_fazenda', fazenda_id=fazenda.fazendaId) }}" method="POST" style="display: inline;">
                             <button type="submit" class="btn btn-delete action-btn" onclick="return confirm('Tem certeza que deseja excluir esta fazenda?');">
                                 <i class="bi bi-trash"></i>
                             </button>
