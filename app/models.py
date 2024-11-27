@@ -69,7 +69,7 @@ class Menu(db.Model): #feito
     menuDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
     menuDataUltimaAtualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-class MiniApp(db.Model):
+class MiniApp(db.Model): #feito
     __tablename__ = 'miniApps'
 
     miniAppId = db.Column(db.Integer, primary_key=True)

@@ -70,3 +70,6 @@ def register_blueprints(app):
 
     from .blueprints.miniapp_blueprint import miniapp_bp
     app.register_blueprint(miniapp_bp, url_prefix='/miniapp')
+
+    from .blueprints.perfispermissoes_blueprint import perfispermissoes_bp
+    app.register_blueprint(perfispermissoes_bp, url_prefix='/perfisPermissoes')

@@ -82,3 +82,8 @@ class MiniAppForm(FlaskForm):
     miniAppIcon = StringField('Ícone do MiniApp', validators=[DataRequired(), Length(max=40)])
     menuId = SelectField('Menu', choices=[], coerce=int, validators=[DataRequired()])
     submit = SubmitField('Salvar')
+
+class PerfisPermissoesForm(FlaskForm):
+    perfilId = SelectField('Perfil', choices=[], coerce=int, validators=[DataRequired()])
+    miniAppId = SelectField('MiniApp', choices=[], coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Salvar')
