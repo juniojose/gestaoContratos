@@ -1,4 +1,4 @@
-from flask import abort, flash
+from flask import abort, flash, redirect, url_for
 from flask_login import current_user
 
 def has_permission(miniAppId):
@@ -21,6 +21,7 @@ def permission_required(miniAppId):
     def decorator(func):
         def wrapper(*args, **kwargs):
             if not has_permission(miniAppId):
+                # Redireciona para a página de erro personalizada
                 flash("Você não tem permissão para acessar este recurso.", "danger")
                 return abort(403)
             return func(*args, **kwargs)

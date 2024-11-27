@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
 from flask_wtf import CSRFProtect
 from flask_login import LoginManager
+from flask import render_template
 from dotenv import load_dotenv
 from datetime import timedelta
 
@@ -32,6 +33,10 @@ def create_app():
 
     # Registra blueprints
     register_blueprints(app)
+
+    @app.errorhandler(403)
+    def forbidden_error(error):
+        return render_template('403.html'), 403
 
     return app
 

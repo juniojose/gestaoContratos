@@ -229,3 +229,24 @@ main {
     display: flex;
     align-items: center;
 }
+
+/****************************************************/
+/* Página 403 */
+/****************************************************/
+.btn-home {
+    background-color: #007142; /* Cor do botão */
+    color: white; /* Cor do texto */
+    padding: 15px 30px; /* Mais preenchimento */
+    font-size: 1.2rem; /* Tamanho maior da fonte */
+    border-radius: 8px; /* Borda arredondada */
+    text-align: center; /* Centralização do texto */
+    width: 100%; /* Ocupa toda a largura disponível */
+    max-width: 300px; /* Largura máxima */
+    display: block; /* Torna o botão um bloco para centralização */
+    margin: 20px auto; /* Centraliza horizontalmente e adiciona espaçamento vertical */
+}
+
+.btn-home:hover {
+    background-color: #005a33; /* Cor ao passar o mouse */
+    text-decoration: none; /* Remove sublinhado ao passar o mouse */
+}
