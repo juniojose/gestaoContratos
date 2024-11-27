@@ -41,6 +41,7 @@
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <form action="{{ url_for('fazendas.delete_fazenda', fazenda_id=fazenda.fazendaId) }}" method="POST" style="display: inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button type="submit" class="btn btn-delete action-btn" onclick="return confirm('Tem certeza que deseja excluir esta fazenda?');">
                                 <i class="bi bi-trash"></i>
                             </button>
