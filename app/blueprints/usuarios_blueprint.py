@@ -47,8 +47,6 @@ def new_usuario():
         except IntegrityError:
             db.session.rollback()
             flash('Erro: Já existe um usuário com este e-mail.', 'error')
-    else:
-        print(f"Erros no formulário: {form.errors}")
 
     return render_template('usuario_form.html', form=form, title='Cadastro de Usuário')
 
