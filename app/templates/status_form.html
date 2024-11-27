@@ -3,23 +3,33 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>{{ title }}</h2>
-    <form method="POST" action="">
+<div class="container mt-4 p-4" style="background-color: #f7f7f7; border-radius: 8px;">
+    <form method="POST">
         {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{ form.statusDescricao.label(class="form-label") }}
-            {{ form.statusDescricao(class="form-control", value=form.statusDescricao.data) }}
-            {% if form.statusDescricao.errors %}
-                <div class="text-danger">
-                    {% for error in form.statusDescricao.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
+
+        <!-- Linha do Título -->
+        <div class="row mb-3">
+            <div class="d-flex flex-column justify-content-start">
+                <h4 class="form-title">{{ title }}</h4>
+                <hr class="line-fine">
+            </div>
         </div>
-        <div class="form-group mt-3">
-            {{ form.submit(class="btn btn-primary") }}
+
+        <!-- Linha do Formulário -->
+        <div class="row mb-1">
+            <div class="col-md-12 d-flex flex-column justify-content-start">
+                {{ form.statusDescricao.label(class="form-label") }}
+                {{ form.statusDescricao(class="form-control") }}
+            </div>
+        </div>
+
+        <!-- Botão de Salvar -->
+        <div class="row mt-3 bg-save-row">
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Salvar
+                </button>
+            </div>
         </div>
     </form>
 </div>

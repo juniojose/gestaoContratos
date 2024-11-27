@@ -1,10 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SubmitField
-from wtforms.validators import DataRequired, Length, ValidationError
-from .models import Fazenda
-
-# Formulário de Status
-from .models import Status
+from wtforms import StringField, PasswordField, SelectField, SubmitField, DateTimeField
+from wtforms.validators import DataRequired, Email, ValidationError, EqualTo, Length
+from app.models import Usuario, Status, Fazenda, UsuariosPerfis, Menu, MiniApp, PerfisPermissoes
 
 class StatusForm(FlaskForm):
     statusDescricao = StringField('Descrição do Status', validators=[DataRequired(), Length(max=100)])
@@ -47,3 +44,26 @@ class UsuariosPerfisForm(FlaskForm):
     perfilDescricao = StringField('Descrição do Perfil', validators=[Length(max=100)])
     statusId = SelectField('Status', choices=[], coerce=int, validators=[DataRequired()])
     submit = SubmitField('Salvar')
+
+class UsuarioForm(FlaskForm):
+    usuarioNome = StringField('Nome', validators=[DataRequired(), Length(max=150)])
+    usuarioEmail = StringField('E-mail', validators=[DataRequired(), Email()])
+    usuarioSenha = PasswordField('Senha', validators=[DataRequired(), Length(min=6, max=50)])
+    confirmarSenha = PasswordField('Confirmar Senha', validators=[
+        DataRequired(),
+        EqualTo('usuarioSenha', message='As senhas devem coincidir.')
+    ])
+    usuarioDataValidadePermissao = DateTimeField('Validade da Permissão', format='%Y-%m-%d', validators=[DataRequired()])
+    statusId = SelectField('Status', choices=[], coerce=int, validators=[DataRequired()])
+    fazendaId = SelectField('Fazenda', choices=[], coerce=int)
+    usuarioPerfilId = SelectField('Perfil', choices=[], coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Salvar')
+
+    def __init__(self, usuario_id=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.usuario_id = usuario_id
+
+    def validate_usuarioEmail(self, usuarioEmail):
+        usuario = Usuario.query.filter_by(usuarioEmail=usuarioEmail.data).first()
+        if usuario and usuario.usuarioId != self.usuario_id:
+            raise ValidationError('Já existe um usuário com este e-mail.')

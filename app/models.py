@@ -1,7 +1,7 @@
 from . import db
 from datetime import datetime
 
-class Status(db.Model):
+class Status(db.Model): #feito
     __tablename__ = 'status'
 
     statusId = db.Column(db.Integer, primary_key=True)
@@ -9,7 +9,7 @@ class Status(db.Model):
     statusDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
     statusDataUltimaAtualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-class Fazenda(db.Model):
+class Fazenda(db.Model): #feito
     __tablename__ = 'fazendas'
 
     fazendaId = db.Column(db.Integer, primary_key=True)
@@ -29,7 +29,7 @@ class Fazenda(db.Model):
     # Relacionamento com Status
     status = db.relationship('Status', backref=db.backref('fazendas', lazy=True))
 
-class UsuariosPerfis(db.Model):  # Certifique-se de que o nome está correto
+class UsuariosPerfis(db.Model): #feito
     __tablename__ = 'usuariosPerfis'
 
     perfilId = db.Column(db.Integer, primary_key=True)
@@ -42,7 +42,7 @@ class UsuariosPerfis(db.Model):  # Certifique-se de que o nome está correto
     # Relacionamento com Status
     status = db.relationship('Status', backref=db.backref('usuariosPerfis', lazy=True))
 
-class Usuario(db.Model):
+class Usuario(db.Model): #feito
     __tablename__ = 'usuarios'
 
     usuarioId = db.Column(db.Integer, primary_key=True)
@@ -60,3 +60,37 @@ class Usuario(db.Model):
     status = db.relationship('Status', backref=db.backref('usuarios', lazy=True))
     fazenda = db.relationship('Fazenda', backref=db.backref('usuarios', lazy=True))
     perfil = db.relationship('UsuariosPerfis', backref=db.backref('usuarios', lazy=True))
+
+class Menu(db.Model):
+    __tablename__ = 'menus'
+
+    menuId = db.Column(db.Integer, primary_key=True)
+    menuNome = db.Column(db.String(30), unique=True, nullable=False)
+    menuDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
+    menuDataUltimaAtualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class MiniApp(db.Model):
+    __tablename__ = 'miniApps'
+
+    miniAppId = db.Column(db.Integer, primary_key=True)
+    miniAppNome = db.Column(db.String(100), unique=True, nullable=False)
+    miniAppIcon = db.Column(db.String(40), nullable=False)
+    menuId = db.Column(db.Integer, db.ForeignKey('menus.menuId'), nullable=False)
+    miniAppDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
+    miniAppDataUltimaAtualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relacionamento com Menu
+    menu = db.relationship('Menu', backref=db.backref('miniApps', lazy=True))
+
+class PerfisPermissoes(db.Model):
+    __tablename__ = 'perfisPermissoes'
+
+    perfilPermissaoId = db.Column(db.Integer, primary_key=True)
+    perfilId = db.Column(db.Integer, db.ForeignKey('usuariosPerfis.perfilId'), nullable=False)
+    miniAppId = db.Column(db.Integer, db.ForeignKey('miniApps.miniAppId'), nullable=False)
+    perfilPermissaoDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
+    perfilPermissaoDataUltimaAtualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relacionamentos
+    perfil = db.relationship('UsuariosPerfis', backref=db.backref('perfisPermissoes', lazy=True))
+    miniApp = db.relationship('MiniApp', backref=db.backref('perfisPermissoes', lazy=True))

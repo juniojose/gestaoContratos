@@ -6,10 +6,15 @@ from sqlalchemy.exc import IntegrityError
 
 fazendas_bp = Blueprint('fazendas', __name__, template_folder='templates')
 
-@fazendas_bp.route("/", methods=['GET'])
+@fazendas_bp.route("/", methods=["GET"])
 def list_fazendas():
-    fazendas = Fazenda.query.all()
-    return render_template('list_fazendas.html',fazendas=fazendas)
+    page = request.args.get("page", 1, type=int)
+    per_page = 10
+    pagination = Fazenda.query.paginate(page=page, per_page=per_page, error_out=False)
+    fazendas = pagination.items
+
+    return render_template("list_fazendas.html", fazendas=fazendas, pagination=pagination)
+
 
 @fazendas_bp.route("/new", methods=['GET', 'POST'])
 def new_fazenda():

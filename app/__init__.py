@@ -49,14 +49,18 @@ def initialize_extensions(app):
 def register_blueprints(app):
     """Registra os blueprints com a aplicação."""
     from .blueprints.status_blueprint import status_bp
-    app.register_blueprint(status_bp, url_prefix='/status')  # Prefixo /status
+    app.register_blueprint(status_bp, url_prefix='/status')
 
     from .blueprints.fazendas_blueprint import fazendas_bp
-    app.register_blueprint(fazendas_bp, url_prefix='/fazendas')  # Prefixo /fazenda
+    app.register_blueprint(fazendas_bp, url_prefix='/fazendas')
 
     from .blueprints.usuariosperfis_blueprint import usuariosperfis_bp
-    app.register_blueprint(usuariosperfis_bp, url_prefix='/usuariosperfis')  # Prefixo /usuariosperfis
+    app.register_blueprint(usuariosperfis_bp, url_prefix='/usuariosperfis')
 
     # Importe e registre o blueprint main_bp
     from .blueprints.main_blueprint import main_bp
-    app.register_blueprint(main_bp, url_prefix='/')  # Sem prefixo para as rotas principais
+    app.register_blueprint(main_bp, url_prefix='/')
+
+    # Importe e registre o blueprint usuarios_bp
+    from .blueprints.usuarios_blueprint import usuarios_bp
+    app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
