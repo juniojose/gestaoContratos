@@ -4,11 +4,15 @@ from app.models import Status
 from app.forms import StatusForm
 from app import db
 from sqlalchemy.exc import IntegrityError
+from flask_login import login_required
+from app.middlewares import permission_required
 
 status_bp = Blueprint('status', __name__, template_folder='templates', url_prefix='/status')
 
 # Lista os status com paginação
 @status_bp.route("/", methods=["GET"])
+@login_required
+@permission_required(miniAppId=4)
 def list_status():
     page = request.args.get("page", 1, type=int)
     per_page = 10  # Número de itens por página
@@ -19,6 +23,7 @@ def list_status():
 
 # Cria um novo status
 @status_bp.route("/new", methods=['GET', 'POST'])
+@login_required
 def new_status():
     form = StatusForm()
     if form.validate_on_submit():
@@ -37,6 +42,7 @@ def new_status():
 
 # Edita um status existente
 @status_bp.route("/edit/<int:status_id>", methods=['GET', 'POST'])
+@login_required
 def edit_status(status_id):
     status = Status.query.get_or_404(status_id)
     form = StatusForm()
@@ -55,6 +61,7 @@ def edit_status(status_id):
 
 # Deleta um status
 @status_bp.route("/delete/<int:status_id>", methods=['POST'])
+@login_required
 def delete_status(status_id):
     status = Status.query.get_or_404(status_id)
     try:

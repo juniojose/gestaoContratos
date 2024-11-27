@@ -3,11 +3,15 @@ from app.forms import UsuariosPerfisForm
 from app.models import UsuariosPerfis, Status
 from app import db
 from sqlalchemy.exc import IntegrityError
+from flask_login import login_required
+from app.middlewares import permission_required
 
 usuariosperfis_bp = Blueprint('usuariosperfis', __name__, template_folder='templates')
 
 # Lista os perfis
 @usuariosperfis_bp.route("/", methods=['GET'])
+@login_required
+@permission_required(miniAppId=6)
 def list_usuariosPerfis():
     try:
         # Paginação
@@ -27,6 +31,7 @@ def list_usuariosPerfis():
 
 # Cria um novo perfil
 @usuariosperfis_bp.route("/new", methods=['GET', 'POST'])
+@login_required
 def new_usuariosPerfis():
     form = UsuariosPerfisForm()
 
@@ -59,6 +64,7 @@ def new_usuariosPerfis():
 
 # Edita um perfil existente
 @usuariosperfis_bp.route("/edit/<int:perfil_id>", methods=['GET', 'POST'])
+@login_required
 def edit_usuariosPerfis(perfil_id):
     perfil = UsuariosPerfis.query.get_or_404(perfil_id)
     form = UsuariosPerfisForm()
@@ -95,6 +101,7 @@ def edit_usuariosPerfis(perfil_id):
 
 # Deleta um perfil
 @usuariosperfis_bp.route("/delete/<int:perfil_id>", methods=['POST'])
+@login_required
 def delete_usuariosPerfis(perfil_id):
     perfil = UsuariosPerfis.query.get_or_404(perfil_id)
     try:

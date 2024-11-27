@@ -3,11 +3,15 @@ from app.forms import PerfisPermissoesForm
 from app.models import PerfisPermissoes, UsuariosPerfis, MiniApp
 from app import db
 from sqlalchemy.exc import IntegrityError
+from flask_login import login_required
+from app.middlewares import permission_required
 
 perfispermissoes_bp = Blueprint('perfispermissoes', __name__, template_folder='templates')
 
 # Listar Perfis Permissões com paginação
 @perfispermissoes_bp.route("/", methods=['GET'])
+@login_required
+@permission_required(miniAppId=1)
 def list_perfisPermissoes():
     page = request.args.get('page', 1, type=int)
     permissoes = PerfisPermissoes.query.order_by(PerfisPermissoes.perfilPermissaoId).paginate(page=page, per_page=10)
@@ -15,6 +19,7 @@ def list_perfisPermissoes():
 
 # Criar nova permissão
 @perfispermissoes_bp.route("/new", methods=['GET', 'POST'])
+@login_required
 def new_perfisPermissoes():
     form = PerfisPermissoesForm()
 
@@ -40,6 +45,7 @@ def new_perfisPermissoes():
 
 # Editar permissão
 @perfispermissoes_bp.route("/edit/<int:perfilPermissaoId>", methods=['GET', 'POST'])
+@login_required
 def edit_perfisPermissoes(perfilPermissaoId):
     permissao = PerfisPermissoes.query.get_or_404(perfilPermissaoId)
     form = PerfisPermissoesForm()
@@ -66,6 +72,7 @@ def edit_perfisPermissoes(perfilPermissaoId):
 
 # Deletar permissão
 @perfispermissoes_bp.route("/delete/<int:perfilPermissaoId>", methods=['POST'])
+@login_required
 def delete_perfisPermissoes(perfilPermissaoId):
     permissao = PerfisPermissoes.query.get_or_404(perfilPermissaoId)
     try:

@@ -87,3 +87,8 @@ class PerfisPermissoesForm(FlaskForm):
     perfilId = SelectField('Perfil', choices=[], coerce=int, validators=[DataRequired()])
     miniAppId = SelectField('MiniApp', choices=[], coerce=int, validators=[DataRequired()])
     submit = SubmitField('Salvar')
+
+class LoginForm(FlaskForm):
+    email = StringField("E-mail", validators=[DataRequired(), Email(), Length(max=255)])
+    password = PasswordField("Senha", validators=[DataRequired()])
+    submit = SubmitField("Entrar")

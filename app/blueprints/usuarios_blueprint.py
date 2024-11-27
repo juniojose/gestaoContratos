@@ -3,10 +3,14 @@ from app.forms import UsuarioForm
 from app.models import Usuario, Status, Fazenda, UsuariosPerfis
 from app import db, bcrypt
 from sqlalchemy.exc import IntegrityError
+from flask_login import login_required
+from app.middlewares import permission_required
 
 usuarios_bp = Blueprint('usuarios', __name__, template_folder='templates')
 
 @usuarios_bp.route("/", methods=["GET"])
+@login_required
+@permission_required(miniAppId=5)
 def list_usuarios():
     page = request.args.get("page", 1, type=int)
     per_page = 10
@@ -16,6 +20,7 @@ def list_usuarios():
     return render_template("list_usuarios.html", usuarios=usuarios, pagination=pagination)
 
 @usuarios_bp.route("/new", methods=['GET', 'POST'])
+@login_required
 def new_usuario():
     form = UsuarioForm()
 
@@ -48,6 +53,7 @@ def new_usuario():
     return render_template('usuario_form.html', form=form, title='Cadastro de Usuário')
 
 @usuarios_bp.route("/edit/<int:usuario_id>", methods=['GET', 'POST'])
+@login_required
 def edit_usuario(usuario_id):
     usuario = Usuario.query.get_or_404(usuario_id)
     form = UsuarioForm(usuario_id=usuario_id)
@@ -84,6 +90,7 @@ def edit_usuario(usuario_id):
     return render_template('usuario_form.html', form=form, title='Editar Usuário')
 
 @usuarios_bp.route("/delete/<int:usuario_id>", methods=['POST'])
+@login_required
 def delete_usuario(usuario_id):
     usuario = Usuario.query.get_or_404(usuario_id)
     db.session.delete(usuario)

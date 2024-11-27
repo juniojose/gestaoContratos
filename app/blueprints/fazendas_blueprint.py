@@ -1,12 +1,16 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from app.forms import FazendaForm
-from app.models import Fazenda, Status  # Importe o modelo Status
+from app.models import Fazenda, Status
 from app import db
 from sqlalchemy.exc import IntegrityError
+from flask_login import login_required
+from app.middlewares import permission_required
 
 fazendas_bp = Blueprint('fazendas', __name__, template_folder='templates')
 
 @fazendas_bp.route("/", methods=["GET"])
+@login_required
+@permission_required(miniAppId=1)
 def list_fazendas():
     page = request.args.get("page", 1, type=int)
     per_page = 10
@@ -17,6 +21,7 @@ def list_fazendas():
 
 
 @fazendas_bp.route("/new", methods=['GET', 'POST'])
+@login_required
 def new_fazenda():
     form = FazendaForm()
 
@@ -47,6 +52,7 @@ def new_fazenda():
     return render_template('fazenda_form.html', form=form, title='Cadastro de Fazenda')
 
 @fazendas_bp.route("/edit/<int:fazenda_id>", methods=['GET', 'POST'])
+@login_required
 def edit_fazenda(fazenda_id):
     fazenda = Fazenda.query.get_or_404(fazenda_id)
     form = FazendaForm(fazenda_id=fazenda_id)
@@ -88,6 +94,7 @@ def edit_fazenda(fazenda_id):
     return render_template('fazenda_form.html', form=form, title='Editar Fazenda')
 
 @fazendas_bp.route("/delete/<int:fazenda_id>", methods=['POST'])
+@login_required
 def delete_fazenda(fazenda_id):
     fazenda = Fazenda.query.get_or_404(fazenda_id)
     db.session.delete(fazenda)

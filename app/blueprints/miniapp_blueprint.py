@@ -3,11 +3,15 @@ from app.forms import MiniAppForm
 from app.models import MiniApp, Menu
 from app import db
 from sqlalchemy.exc import IntegrityError
+from flask_login import login_required
+from app.middlewares import permission_required
 
 miniapp_bp = Blueprint('miniapp', __name__, template_folder='templates')
 
 # Lista os MiniApps com paginação
 @miniapp_bp.route("/", methods=['GET'])
+@login_required
+@permission_required(miniAppId=3)
 def list_miniapps():
     page = request.args.get('page', 1, type=int)
     per_page = 10
@@ -17,6 +21,7 @@ def list_miniapps():
 
 # Cria um novo MiniApp
 @miniapp_bp.route("/new", methods=['GET', 'POST'])
+@login_required
 def new_miniapp():
     form = MiniAppForm()
     form.menuId.choices = [(menu.menuId, menu.menuNome) for menu in Menu.query.order_by(Menu.menuNome).all()]
@@ -42,6 +47,7 @@ def new_miniapp():
 
 # Edita um MiniApp existente
 @miniapp_bp.route("/edit/<int:miniapp_id>", methods=['GET', 'POST'])
+@login_required
 def edit_miniapp(miniapp_id):
     miniapp = MiniApp.query.get_or_404(miniapp_id)
     form = MiniAppForm()
@@ -70,6 +76,7 @@ def edit_miniapp(miniapp_id):
 
 # Deleta um MiniApp
 @miniapp_bp.route("/delete/<int:miniapp_id>", methods=['POST'])
+@login_required
 def delete_miniapp(miniapp_id):
     miniapp = MiniApp.query.get_or_404(miniapp_id)
     try:

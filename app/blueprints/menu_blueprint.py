@@ -3,11 +3,15 @@ from app.forms import MenuForm
 from app.models import Menu
 from app import db
 from sqlalchemy.exc import IntegrityError
+from flask_login import login_required
+from app.middlewares import permission_required
 
 menu_bp = Blueprint('menu', __name__, template_folder='templates')
 
 # Lista os menus com paginação
 @menu_bp.route("/", methods=['GET'])
+@login_required
+@permission_required(miniAppId=2)
 def list_menu():
     page = request.args.get('page', 1, type=int)
     per_page = 10  # Define o número de itens por página
@@ -16,6 +20,7 @@ def list_menu():
 
 # Cria um novo menu
 @menu_bp.route("/new", methods=['GET', 'POST'])
+@login_required
 def new_menu():
     form = MenuForm()
     if form.validate_on_submit():
@@ -32,6 +37,7 @@ def new_menu():
 
 # Edita um menu existente
 @menu_bp.route("/edit/<int:menu_id>", methods=['GET', 'POST'])
+@login_required
 def edit_menu(menu_id):
     menu = Menu.query.get_or_404(menu_id)
     form = MenuForm()
@@ -50,6 +56,7 @@ def edit_menu(menu_id):
 
 # Deleta um menu
 @menu_bp.route("/delete/<int:menu_id>", methods=['POST'])
+@login_required
 def delete_menu(menu_id):
     menu = Menu.query.get_or_404(menu_id)
     try:

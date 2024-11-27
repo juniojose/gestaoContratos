@@ -5,7 +5,9 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
 from flask_wtf import CSRFProtect
+from flask_login import LoginManager
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
@@ -16,6 +18,7 @@ migrate = Migrate()
 bcrypt = Bcrypt()
 bootstrap = Bootstrap()
 csrf = CSRFProtect()
+login_manager = LoginManager()
 
 def create_app():
     # Cria a aplicação Flask
@@ -45,6 +48,18 @@ def initialize_extensions(app):
     bcrypt.init_app(app)
     bootstrap.init_app(app)
     csrf.init_app(app)
+    login_manager.init_app(app)  # Inicializa o gerenciador de login
+    login_manager.login_view = "auth.login"  # Define a rota de login
+    login_manager.login_message = "Por favor, faça login para acessar esta página."
+    login_manager.login_message_category = "warning"
+    login_manager.session_protection = "strong"
+    app.permanent_session_lifetime = timedelta(minutes=10)  # Sessão expira após 10 minutos
+
+    # Função para carregar o usuário pelo ID
+    from app.models import Usuario  # Importa o modelo Usuario
+    @login_manager.user_loader
+    def load_user(user_id):
+        return Usuario.query.get(int(user_id))
 
 def register_blueprints(app):
     """Registra os blueprints com a aplicação."""
@@ -73,3 +88,6 @@ def register_blueprints(app):
 
     from .blueprints.perfispermissoes_blueprint import perfispermissoes_bp
     app.register_blueprint(perfispermissoes_bp, url_prefix='/perfisPermissoes')
+
+    from .blueprints.auth_blueprint import auth_bp
+    app.register_blueprint(auth_bp, url_prefix="/auth")

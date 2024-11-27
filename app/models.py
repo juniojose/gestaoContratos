@@ -1,5 +1,6 @@
 from . import db
 from datetime import datetime
+from flask_login import UserMixin
 
 class Status(db.Model): #feito
     __tablename__ = 'status'
@@ -42,7 +43,7 @@ class UsuariosPerfis(db.Model): #feito
     # Relacionamento com Status
     status = db.relationship('Status', backref=db.backref('usuariosPerfis', lazy=True))
 
-class Usuario(db.Model): #feito
+class Usuario(db.Model, UserMixin):  # Adiciona UserMixin
     __tablename__ = 'usuarios'
 
     usuarioId = db.Column(db.Integer, primary_key=True)
@@ -60,6 +61,9 @@ class Usuario(db.Model): #feito
     status = db.relationship('Status', backref=db.backref('usuarios', lazy=True))
     fazenda = db.relationship('Fazenda', backref=db.backref('usuarios', lazy=True))
     perfil = db.relationship('UsuariosPerfis', backref=db.backref('usuarios', lazy=True))
+
+    def get_id(self):
+        return str(self.usuarioId)
 
 class Menu(db.Model): #feito
     __tablename__ = 'menus'
