@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4 p-4" style="background-color: #f7f7f7; border-radius: 8px;">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="row mb-3">
+            <div class="d-flex flex-column justify-content-start">
+                <h4 class="form-title">{{ title }}</h4>
+                <hr class="line-fine">
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col-md-6">
+                {{ form.miniAppNome.label(class="form-label") }}
+                {{ form.miniAppNome(class="form-control") }}
+            </div>
+            <div class="col-md-6">
+                {{ form.miniAppIcon.label(class="form-label") }}
+                {{ form.miniAppIcon(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col-md-12">
+                {{ form.menuId.label(class="form-label") }}
+                {{ form.menuId(class="form-control") }}
+            </div>
+        </div>
+
+        <div class="row mt-3 bg-save-row">
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

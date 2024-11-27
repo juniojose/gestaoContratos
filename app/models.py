@@ -61,7 +61,7 @@ class Usuario(db.Model): #feito
     fazenda = db.relationship('Fazenda', backref=db.backref('usuarios', lazy=True))
     perfil = db.relationship('UsuariosPerfis', backref=db.backref('usuarios', lazy=True))
 
-class Menu(db.Model):
+class Menu(db.Model): #feito
     __tablename__ = 'menus'
 
     menuId = db.Column(db.Integer, primary_key=True)

@@ -67,3 +67,6 @@ def register_blueprints(app):
 
     from .blueprints.menu_blueprint import menu_bp
     app.register_blueprint(menu_bp, url_prefix='/menu')
+
+    from .blueprints.miniapp_blueprint import miniapp_bp
+    app.register_blueprint(miniapp_bp, url_prefix='/miniapp')

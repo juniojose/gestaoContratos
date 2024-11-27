@@ -76,3 +76,9 @@ class MenuForm(FlaskForm):
         menu = Menu.query.filter_by(menuNome=menuNome.data).first()
         if menu:
             raise ValidationError('Já existe um menu com esse nome.')
+
+class MiniAppForm(FlaskForm):
+    miniAppNome = StringField('Nome do MiniApp', validators=[DataRequired(), Length(max=100)])
+    miniAppIcon = StringField('Ícone do MiniApp', validators=[DataRequired(), Length(max=40)])
+    menuId = SelectField('Menu', choices=[], coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Salvar')
