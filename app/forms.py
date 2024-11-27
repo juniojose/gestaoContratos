@@ -67,3 +67,12 @@ class UsuarioForm(FlaskForm):
         usuario = Usuario.query.filter_by(usuarioEmail=usuarioEmail.data).first()
         if usuario and usuario.usuarioId != self.usuario_id:
             raise ValidationError('Já existe um usuário com este e-mail.')
+
+class MenuForm(FlaskForm):
+    menuNome = StringField('Nome do Menu', validators=[DataRequired(), Length(max=30)])
+    submit = SubmitField('Salvar')
+
+    def validate_menuNome(self, menuNome):
+        menu = Menu.query.filter_by(menuNome=menuNome.data).first()
+        if menu:
+            raise ValidationError('Já existe um menu com esse nome.')

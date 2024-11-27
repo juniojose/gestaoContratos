@@ -64,3 +64,6 @@ def register_blueprints(app):
     # Importe e registre o blueprint usuarios_bp
     from .blueprints.usuarios_blueprint import usuarios_bp
     app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
+
+    from .blueprints.menu_blueprint import menu_bp
+    app.register_blueprint(menu_bp, url_prefix='/menu')
