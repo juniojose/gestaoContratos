@@ -24,21 +24,11 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
+                        {% for menu in g.menus %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main_bp.home') }}">Home</a>
+                            <a class="nav-link" href="{{ url_for('main_bp.home') }}">{{ menu.menuNome }}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main_bp.home') }}">Cadastros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main_bp.home') }}">Lançamentos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main_bp.home') }}">Relatórios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main_bp.home') }}">Configurações</a>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>

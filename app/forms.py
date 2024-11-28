@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, SubmitField, DateTimeField
-from wtforms.validators import DataRequired, Email, ValidationError, EqualTo, Length
+from wtforms import StringField, PasswordField, SelectField, SubmitField, DateTimeField, IntegerField
+from wtforms.validators import DataRequired, Email, ValidationError, EqualTo, Length, NumberRange
 from app.models import Usuario, Status, Fazenda, UsuariosPerfis, Menu, MiniApp, PerfisPermissoes
 
 class StatusForm(FlaskForm):
@@ -69,13 +69,19 @@ class UsuarioForm(FlaskForm):
             raise ValidationError('Já existe um usuário com este e-mail.')
 
 class MenuForm(FlaskForm):
-    menuNome = StringField('Nome do Menu', validators=[DataRequired(), Length(max=30)])
-    submit = SubmitField('Salvar')
+    menuNome = StringField("Nome do Menu", validators=[DataRequired()])
+    menuOrdem = IntegerField("Ordem", validators=[DataRequired()])
 
-    def validate_menuNome(self, menuNome):
-        menu = Menu.query.filter_by(menuNome=menuNome.data).first()
-        if menu:
-            raise ValidationError('Já existe um menu com esse nome.')
+    def validate_menuNome(self, field):
+        # Verifica se já existe outro menu com o mesmo nome
+        existing_menu = Menu.query.filter_by(menuNome=field.data).first()
+        if existing_menu and (not self.menuId or existing_menu.menuId != self.menuId):
+            raise ValidationError("Já existe um menu com esse nome.")
+
+    # Permite passar o ID do menu para ignorar durante a validação
+    def __init__(self, *args, **kwargs):
+        self.menuId = kwargs.pop('menuId', None)
+        super(MenuForm, self).__init__(*args, **kwargs)
 
 class MiniAppForm(FlaskForm):
     miniAppNome = StringField('Nome do MiniApp', validators=[DataRequired(), Length(max=100)])

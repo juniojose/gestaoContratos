@@ -86,7 +86,7 @@ def register_blueprints(app):
     app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
 
     from .blueprints.menu_blueprint import menu_bp
-    app.register_blueprint(menu_bp, url_prefix='/menu')
+    app.register_blueprint(menu_bp, url_prefix='/menus')
 
     from .blueprints.miniapp_blueprint import miniapp_bp
     app.register_blueprint(miniapp_bp, url_prefix='/miniapp')
