@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Permissões de Usuários{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h4>Lista de Permissões de Usuários</h4>
+    <hr class="line-fine">
+
+    <!-- Botões de Navegação -->
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{{ url_for('main_bp.home') }}" class="btn btn-secondary">
+            <i class="bi bi-house-door"></i> Página Inicial
+        </a>
+        <a href="{{ url_for('usuariospermissoes.new_usuariospermissao') }}" class="btn btn-add">
+            <i class="bi bi-plus"></i> Adicionar
+        </a>
+    </div>
+
+    <!-- Tabela de Permissões -->
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuário</th>
+                <th>MiniApp</th>
+                <th>Motivo</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for permissao in permissoes %}
+            <tr>
+                <td>{{ permissao.permissaoId }}</td>
+                <td>{{ permissao.usuario.usuarioNome }}</td>
+                <td>{{ permissao.miniApp.miniAppNome }}</td>
+                <td>{{ permissao.permissaoMotivo }}</td>
+                <td>{{ permissao.status.statusDescricao }}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <a href="{{ url_for('usuariospermissoes.edit_usuariospermissao', permissao_id=permissao.permissaoId) }}" class="btn btn-edit action-btn me-2">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <form action="{{ url_for('usuariospermissoes.delete_usuariospermissao', permissao_id=permissao.permissaoId) }}" method="POST" style="display: inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-delete action-btn" onclick="return confirm('Tem certeza que deseja excluir esta permissão?');">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Paginação -->
+    {% if pagination %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('usuariospermissoes.list_usuariosPermissoes', page=pagination.prev_num) }}">Anterior</a>
+            </li>
+            {% endif %}
+            {% for page_num in pagination.iter_pages() %}
+            <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('usuariospermissoes.list_usuariosPermissoes', page=page_num) }}">{{ page_num }}</a>
+            </li>
+            {% endfor %}
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('usuariospermissoes.list_usuariosPermissoes', page=pagination.next_num) }}">Próxima</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <p class="text-center">Nenhuma permissão encontrada.</p>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -92,3 +92,10 @@ class LoginForm(FlaskForm):
     email = StringField("E-mail", validators=[DataRequired(), Email(), Length(max=255)])
     password = PasswordField("Senha", validators=[DataRequired()])
     submit = SubmitField("Entrar")
+
+class UsuariosPermissoesForm(FlaskForm):
+    usuarioId = SelectField('Usuário', choices=[], coerce=int, validators=[DataRequired()])
+    miniAppId = SelectField('MiniApp', choices=[], coerce=int, validators=[DataRequired()])
+    statusId = SelectField('Status', choices=[], coerce=int, validators=[DataRequired()])
+    permissaoMotivo = StringField('Motivo da Permissão', validators=[Length(max=255)])
+    submit = SubmitField('Salvar')

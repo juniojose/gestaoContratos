@@ -96,3 +96,6 @@ def register_blueprints(app):
 
     from .blueprints.auth_blueprint import auth_bp
     app.register_blueprint(auth_bp, url_prefix="/auth")
+
+    from .blueprints.usuariospermissoes_blueprint import usuariospermissoes_bp
+    app.register_blueprint(usuariospermissoes_bp, url_prefix='/usuariospermissoes')
