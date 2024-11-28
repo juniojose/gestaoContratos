@@ -24,6 +24,7 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Ordem</th>
+                <th>Template</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -33,6 +34,7 @@
                 <td>{{ menu.menuId }}</td>
                 <td>{{ menu.menuNome }}</td>
                 <td>{{ menu.menuOrdem }}</td>
+                <td>{{ menu.menuTemplate }}</td>
                 <td>
                     <div class="d-flex align-items-center">
                         <a href="{{ url_for('menus.edit_menu', menu_id=menu.menuId) }}" class="btn btn-edit action-btn me-2">

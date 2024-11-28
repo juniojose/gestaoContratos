@@ -70,7 +70,8 @@ class Menu(db.Model):
 
     menuId = db.Column(db.Integer, primary_key=True)
     menuNome = db.Column(db.String(30), unique=True, nullable=False)
-    menuOrdem = db.Column(db.Integer, nullable=False)  # Define a ordem de exibição
+    menuOrdem = db.Column(db.Integer, nullable=False)
+    menuTemplate = db.Column(db.String(50), unique=True, nullable=False)
     menuDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
     menuDataUltimaAtualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

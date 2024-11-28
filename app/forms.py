@@ -69,19 +69,29 @@ class UsuarioForm(FlaskForm):
             raise ValidationError('Já existe um usuário com este e-mail.')
 
 class MenuForm(FlaskForm):
-    menuNome = StringField("Nome do Menu", validators=[DataRequired()])
-    menuOrdem = IntegerField("Ordem", validators=[DataRequired()])
+    menuNome = StringField(
+        "Nome do Menu",
+        validators=[DataRequired(), Length(max=30)],
+    )
+    menuOrdem = IntegerField(
+        "Ordem do Menu",
+        validators=[DataRequired()],
+    )
+    menuTemplate = StringField(
+        "Template do Menu",
+        validators=[DataRequired(), Length(max=50)],
+    )
+    submit = SubmitField("Salvar")
 
     def validate_menuNome(self, field):
-        # Verifica se já existe outro menu com o mesmo nome
         existing_menu = Menu.query.filter_by(menuNome=field.data).first()
-        if existing_menu and (not self.menuId or existing_menu.menuId != self.menuId):
+        if existing_menu:
             raise ValidationError("Já existe um menu com esse nome.")
 
-    # Permite passar o ID do menu para ignorar durante a validação
-    def __init__(self, *args, **kwargs):
-        self.menuId = kwargs.pop('menuId', None)
-        super(MenuForm, self).__init__(*args, **kwargs)
+    def validate_menuTemplate(self, field):
+        existing_template = Menu.query.filter_by(menuTemplate=field.data).first()
+        if existing_template:
+            raise ValidationError("Já existe um template com esse nome.")
 
 class MiniAppForm(FlaskForm):
     miniAppNome = StringField('Nome do MiniApp', validators=[DataRequired(), Length(max=100)])

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from app.forms import MenuForm
 from app.models import Menu
 from app import db
@@ -24,6 +24,7 @@ def new_menu():
         menu = Menu(
             menuNome=form.menuNome.data,
             menuOrdem=form.menuOrdem.data,
+            menuTemplate=form.menuTemplate.data,
         )
         db.session.add(menu)
         try:
@@ -32,7 +33,7 @@ def new_menu():
             return redirect(url_for("menus.list_menus"))
         except IntegrityError:
             db.session.rollback()
-            flash("Erro: Já existe um menu com esse nome.", "danger")
+            flash("Erro: Já existe um menu com esse nome ou template.", "danger")
     return render_template("menu_form.html", form=form, title="Novo Menu")
 
 # Edita um menu existente
@@ -40,12 +41,25 @@ def new_menu():
 @login_required
 def edit_menu(menu_id):
     menu = Menu.query.get_or_404(menu_id)
-    form = MenuForm(obj=menu, menuId=menu.menuId)  # Passa o menuId ao formulário
+    form = MenuForm(obj=menu)
 
     if form.validate_on_submit():
+        # Verifica se já existe outro menu com o mesmo nome
+        existing_menu = Menu.query.filter(Menu.menuNome == form.menuNome.data, Menu.menuId != menu_id).first()
+        if existing_menu:
+            flash("Erro: Já existe um menu com esse nome.", "danger")
+            return render_template("menu_form.html", form=form, title="Editar Menu")
+
+        # Verifica se já existe outro template com o mesmo nome
+        existing_template = Menu.query.filter(Menu.menuTemplate == form.menuTemplate.data, Menu.menuId != menu_id).first()
+        if existing_template:
+            flash("Erro: Já existe um menu com esse template.", "danger")
+            return render_template("menu_form.html", form=form, title="Editar Menu")
+
         # Atualiza os campos do menu
         menu.menuNome = form.menuNome.data
         menu.menuOrdem = form.menuOrdem.data
+        menu.menuTemplate = form.menuTemplate.data
 
         try:
             db.session.commit()  # Salva as alterações no banco de dados
@@ -66,3 +80,16 @@ def delete_menu(menu_id):
     db.session.commit()
     flash("Menu excluído com sucesso!", "success")
     return redirect(url_for("menus.list_menus"))
+
+@menu_bp.route('/<menu_template>')
+@login_required
+def dynamic_menu(menu_template):
+    # Recupera o menu correspondente ao menu_template
+    menu = Menu.query.filter_by(menuTemplate=menu_template).first()
+
+    if not menu:
+        abort(404)  # Retorna um erro 404 se o menu não for encontrado
+
+    # Renderiza o template e passa o menu para o contexto
+    return render_template(f'{menu.menuTemplate}.html', menu=menu)
+

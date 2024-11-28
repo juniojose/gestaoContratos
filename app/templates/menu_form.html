@@ -15,15 +15,19 @@
             </div>
         </div>
 
-        <!-- Nome e Ordem -->
+        <!-- Nome, Ordem e Template -->
         <div class="row mb-3">
             <div class="col-md-6">
                 {{ form.menuNome.label(class="form-label") }}
                 {{ form.menuNome(class="form-control") }}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 {{ form.menuOrdem.label(class="form-label") }}
                 {{ form.menuOrdem(class="form-control") }}
+            </div>
+            <div class="col-md-3">
+                {{ form.menuTemplate.label(class="form-label") }}
+                {{ form.menuTemplate(class="form-control") }}
             </div>
         </div>
 

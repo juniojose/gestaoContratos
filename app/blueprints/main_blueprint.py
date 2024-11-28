@@ -19,18 +19,31 @@ def load_menus():
     else:
         g.menus = []
 
-
 # Rota para login
 @main_bp.route("/", methods=['GET', 'POST'])
-@login_required
-def login():
-    return redirect(url_for('main_bp.home'))
+def index():
+    # Verifica se o usuário está autenticado
+    if current_user.is_authenticated:
+        # Redireciona para a página home
+        return redirect(url_for('main_bp.home'))
+    else:
+        # Redireciona para a página de login
+        return redirect(url_for('auth.login'))
+
 
 # Rota para a página inicial
 @main_bp.route("/home")
 @login_required
 def home():
-    return render_template('home.html')
+    # Recuperar um menu específico
+    menu = Menu.query.filter_by(menuTemplate='home').first()
+
+    # Certifique-se de que o menu foi encontrado
+    if not menu:
+        return "Menu não encontrado", 404
+
+    # Renderizar o template com a variável `menu`
+    return render_template('home.html', menu=menu)
 
 @main_bp.route('/extend_session', methods=['POST'])
 @login_required
