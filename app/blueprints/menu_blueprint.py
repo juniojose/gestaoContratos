@@ -118,6 +118,10 @@ def delete_menu(menu_id):
 @menu_bp.route("/<menu_template>", methods=["GET"])
 @login_required
 def dynamic_menu(menu_template):
+    if menu_template == "home":
+        # Redireciona para a rota '/home'
+        return redirect(url_for("main_bp.home"))
+
     menu = Menu.query.filter_by(menuTemplate=menu_template).first_or_404()
 
     # Recuperar todos os MiniApps do menu
@@ -126,19 +130,14 @@ def dynamic_menu(menu_template):
     # Filtrar MiniApps com base nas permissões do usuário
     allowed_mini_apps = []
     for mini_app in all_mini_apps:
-        # Verifica se o MiniApp está nas permissões do perfil do usuário
         perfil_permissao = any(
             permissao.miniAppId == mini_app.miniAppId
             for permissao in current_user.perfil.perfisPermissoes
         )
-
-        # Verifica se o MiniApp está nas permissões diretas do usuário
         usuario_permissao = any(
             permissao.miniAppId == mini_app.miniAppId
             for permissao in current_user.usuariosPermissoes
         )
-
-        # Adiciona o MiniApp se o usuário tem permissão
         if perfil_permissao or usuario_permissao:
             allowed_mini_apps.append(mini_app)
 

@@ -32,7 +32,7 @@ def index():
         return redirect(url_for('auth.login'))
 
 # Rota para a página inicial
-@main_bp.route("/home")
+@main_bp.route("/home", methods=["GET"])
 @login_required
 def home():
     # Recuperar o registro de preferências do usuário logado
@@ -44,8 +44,10 @@ def home():
         miniapps_home_ids = preferencias.preferenciaMiniAppsHome
         miniapps_home = MiniApp.query.filter(MiniApp.miniAppId.in_(miniapps_home_ids)).all()
 
-    # Renderizar a Home com os MiniApps selecionados
-    return render_template('home.html', miniapps=miniapps_home)
+    # Registrar log de acesso à Home
+    registrar_log(miniAppId=None, logAcao="Acesso à Home", logResultadoAcao=True)
+
+    return render_template("home.html", miniapps=miniapps_home)
 
 @main_bp.route('/extend_session', methods=['POST'])
 @login_required

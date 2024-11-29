@@ -26,9 +26,11 @@
                     <ul class="navbar-nav">
                         {% for menu in g.menus %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('menus.dynamic_menu', menu_template=menu.menuTemplate) }}">
-                                {{ menu.menuNome }}
-                            </a>
+                            {% if menu.menuTemplate == 'home' %}
+                                <a class="nav-link" href="{{ url_for('main_bp.home') }}">{{ menu.menuNome }}</a>
+                            {% else %}
+                                <a class="nav-link" href="{{ url_for('menus.dynamic_menu', menu_template=menu.menuTemplate) }}">{{ menu.menuNome }}</a>
+                            {% endif %}
                         </li>
                         {% endfor %}
                     </ul>
