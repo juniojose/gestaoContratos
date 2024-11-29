@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, session, g
-from app.models import Menu
+from app.models import Menu, UsuariosPreferencias, MiniApp
 from app import db
 from flask_login import login_required, current_user
 from app.utils.log_utils import registrar_log  # Importa a função de registro de logs
@@ -35,20 +35,17 @@ def index():
 @main_bp.route("/home")
 @login_required
 def home():
-    # Recuperar um menu específico
-    menu = Menu.query.filter_by(menuTemplate='home').first()
+    # Recuperar o registro de preferências do usuário logado
+    preferencias = UsuariosPreferencias.query.filter_by(usuarioId=current_user.usuarioId).first()
 
-    # Certifique-se de que o menu foi encontrado
-    if not menu:
-        # Registrar log de falha ao acessar a página inicial
-        registrar_log(miniAppId=None, logAcao="Acesso à Página Inicial", logResultadoAcao=False)
-        return "Menu não encontrado", 404
+    # Obter os MiniApps selecionados pelo usuário para exibição na Home
+    miniapps_home = []
+    if preferencias and preferencias.preferenciaMiniAppsHome:
+        miniapps_home_ids = preferencias.preferenciaMiniAppsHome
+        miniapps_home = MiniApp.query.filter(MiniApp.miniAppId.in_(miniapps_home_ids)).all()
 
-    # Registrar log de sucesso ao acessar a página inicial
-    registrar_log(miniAppId=None, logAcao="Acesso à Página Inicial", logResultadoAcao=True)
-
-    # Renderizar o template com a variável `menu`
-    return render_template('home.html', menu=menu)
+    # Renderizar a Home com os MiniApps selecionados
+    return render_template('home.html', miniapps=miniapps_home)
 
 @main_bp.route('/extend_session', methods=['POST'])
 @login_required

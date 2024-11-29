@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from app.forms import UsuarioForm
-from app.models import Usuario, Status, Fazenda, UsuariosPerfis
+from app.models import Usuario, Status, Fazenda, UsuariosPerfis, UsuariosPreferencias
 from app import db, bcrypt
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_required, current_user
@@ -49,6 +49,11 @@ def new_usuario():
         )
         db.session.add(usuario)
         try:
+            db.session.commit()
+
+            # Criar preferências padrão para o novo usuário
+            preferencias = UsuariosPreferencias(usuarioId=usuario.usuarioId)
+            db.session.add(preferencias)
             db.session.commit()
 
             # Registrar log de criação bem-sucedida

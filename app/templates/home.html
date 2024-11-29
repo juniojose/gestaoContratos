@@ -1,10 +1,27 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}{{ menu.menuNome }}{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <h4>{{ menu.menuNome }}</h4>
-    <p>Bem-vindo à página {{ menu.menuNome }}!</p>
+    <h4>Página Inicial</h4>
+    <hr class="line-fine">
+
+    <div class="row no-gutters" id="miniapps-home">
+        {% for miniapp in miniapps %}
+        <div class="mini-app">
+            <a href="{{ url_for(miniapp.miniAppLink) }}" class="card p-3 draggable text-decoration-none">
+                <h5 class="mt-2">{{ miniapp.miniAppNome }}</h5>
+                <i class="{{ miniapp.miniAppIcon }} icon-bottom-left"></i>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if miniapps|length == 0 %}
+    <div class="alert alert-info mt-4">
+        <i class="bi bi-info-circle"></i> Nenhum MiniApp selecionado para exibição na Home.
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
