@@ -99,3 +99,6 @@ def register_blueprints(app):
 
     from .blueprints.usuariospermissoes_blueprint import usuariospermissoes_bp
     app.register_blueprint(usuariospermissoes_bp, url_prefix='/usuariospermissoes')
+
+    from .blueprints.logs_blueprint import logs_bp
+    app.register_blueprint(logs_bp, url_prefix='/logs')

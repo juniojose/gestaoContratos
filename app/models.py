@@ -81,7 +81,7 @@ class MiniApp(db.Model):
     miniAppId = db.Column(db.Integer, primary_key=True)
     miniAppNome = db.Column(db.String(100), unique=True, nullable=False)
     miniAppIcon = db.Column(db.String(40), nullable=False)
-    miniAppLink = db.Column(db.String(200), nullable=True)  # Temporariamente nullable
+    miniAppLink = db.Column(db.String(200), nullable=False)
     menuId = db.Column(db.Integer, db.ForeignKey('menus.menuId'), nullable=False)
     miniAppDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
     miniAppDataUltimaAtualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -117,3 +117,17 @@ class UsuariosPermissoes(db.Model):
     status = db.relationship('Status', backref=db.backref('usuariosPermissoes', lazy=True))
     usuario = db.relationship('Usuario', backref=db.backref('usuariosPermissoes', lazy=True))
     miniApp = db.relationship('MiniApp', backref=db.backref('usuariosPermissoes', lazy=True))
+
+class UsuarioLog(db.Model):
+    __tablename__ = 'usuariosLogs'
+
+    logId = db.Column(db.Integer, primary_key=True)
+    usuarioId = db.Column(db.Integer, db.ForeignKey('usuarios.usuarioId'), nullable=False)
+    logTimestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    miniAppId = db.Column(db.Integer, db.ForeignKey('miniApps.miniAppId'), nullable=True)
+    logAcao = db.Column(db.String(255), nullable=False)
+    logResultadoAcao = db.Column(db.Boolean, nullable=False)
+
+    # Relacionamentos
+    usuario = db.relationship('Usuario', backref=db.backref('logs', lazy=True))
+    miniApp = db.relationship('MiniApp', backref=db.backref('logs', lazy=True))

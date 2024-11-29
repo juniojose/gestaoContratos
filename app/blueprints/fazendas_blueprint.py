@@ -5,6 +5,7 @@ from app import db
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_required
 from app.middlewares import permission_required
+from app.utils.log_utils import registrar_log  # Importa a função de logs
 
 fazendas_bp = Blueprint('fazendas', __name__, template_folder='templates')
 
@@ -17,8 +18,10 @@ def list_fazendas():
     pagination = Fazenda.query.paginate(page=page, per_page=per_page, error_out=False)
     fazendas = pagination.items
 
-    return render_template("list_fazendas.html", fazendas=fazendas, pagination=pagination)
+    # Registrar log de visualização da lista de fazendas
+    registrar_log(miniAppId=1, logAcao="Listar Fazendas", logResultadoAcao=True)
 
+    return render_template("list_fazendas.html", fazendas=fazendas, pagination=pagination)
 
 @fazendas_bp.route("/new", methods=['GET', 'POST'])
 @login_required
@@ -45,10 +48,17 @@ def new_fazenda():
         try:
             db.session.commit()
             flash('Fazenda cadastrada com sucesso!', 'success')
-            return redirect(url_for('fazendas.list_fazenda'))
+
+            # Registrar log de sucesso ao criar uma fazenda
+            registrar_log(miniAppId=1, logAcao="Criar Fazenda", logResultadoAcao=True)
+
+            return redirect(url_for('fazendas.list_fazendas'))
         except IntegrityError:
             db.session.rollback()
             flash('Erro: Já existe uma fazenda com essa sigla ou nome.', 'error')
+
+            # Registrar log de falha ao criar uma fazenda
+            registrar_log(miniAppId=1, logAcao="Criar Fazenda", logResultadoAcao=False)
     return render_template('fazenda_form.html', form=form, title='Cadastro de Fazenda')
 
 @fazendas_bp.route("/edit/<int:fazenda_id>", methods=['GET', 'POST'])
@@ -75,10 +85,17 @@ def edit_fazenda(fazenda_id):
         try:
             db.session.commit()
             flash('Fazenda atualizada com sucesso!', 'success')
+
+            # Registrar log de sucesso ao editar uma fazenda
+            registrar_log(miniAppId=1, logAcao=f"Editar Fazenda ID {fazenda_id}", logResultadoAcao=True)
+
             return redirect(url_for('fazendas.list_fazendas'))
         except IntegrityError:
             db.session.rollback()
             flash('Erro: Já existe uma fazenda com essa sigla ou nome.', 'error')
+
+            # Registrar log de falha ao editar uma fazenda
+            registrar_log(miniAppId=1, logAcao=f"Editar Fazenda ID {fazenda_id}", logResultadoAcao=False)
     elif request.method == 'GET':
         form.fazendaSigla.data = fazenda.fazendaSigla
         form.fazendaNome.data = fazenda.fazendaNome
@@ -97,7 +114,18 @@ def edit_fazenda(fazenda_id):
 @login_required
 def delete_fazenda(fazenda_id):
     fazenda = Fazenda.query.get_or_404(fazenda_id)
-    db.session.delete(fazenda)
-    db.session.commit()
-    flash('Fazenda deletada com sucesso!', 'success')
+    try:
+        db.session.delete(fazenda)
+        db.session.commit()
+        flash('Fazenda deletada com sucesso!', 'success')
+
+        # Registrar log de sucesso ao deletar uma fazenda
+        registrar_log(miniAppId=1, logAcao=f"Deletar Fazenda ID {fazenda_id}", logResultadoAcao=True)
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Erro ao deletar fazenda: {str(e)}', 'error')
+
+        # Registrar log de falha ao deletar uma fazenda
+        registrar_log(miniAppId=1, logAcao=f"Deletar Fazenda ID {fazenda_id}", logResultadoAcao=False)
+
     return redirect(url_for('fazendas.list_fazendas'))

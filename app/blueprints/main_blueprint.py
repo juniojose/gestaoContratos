@@ -1,15 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
-from app.forms import StatusForm, FazendaForm, UsuariosPerfisForm
-from app.models import Status, Fazenda, UsuariosPerfis, Menu, PerfisPermissoes
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session, g
+from app.models import Menu
 from app import db
-from sqlalchemy.exc import IntegrityError
-from flask_login import login_required
-from flask_login import current_user
-from flask import Blueprint, render_template, session, redirect, url_for, flash, g
+from flask_login import login_required, current_user
+from app.utils.log_utils import registrar_log  # Importa a função de registro de logs
 
 main_bp = Blueprint('main_bp', __name__)
-
-from app.models import Menu
 
 @main_bp.before_app_request
 def load_menus():
@@ -24,12 +19,17 @@ def load_menus():
 def index():
     # Verifica se o usuário está autenticado
     if current_user.is_authenticated:
+        # Registrar log de acesso à aplicação
+        registrar_log(miniAppId=None, logAcao="Acesso à Aplicação", logResultadoAcao=True)
+
         # Redireciona para a página home
         return redirect(url_for('main_bp.home'))
     else:
+        # Registrar log de tentativa de acesso não autenticado
+        registrar_log(miniAppId=None, logAcao="Tentativa de Acesso Não Autenticado", logResultadoAcao=False)
+
         # Redireciona para a página de login
         return redirect(url_for('auth.login'))
-
 
 # Rota para a página inicial
 @main_bp.route("/home")
@@ -40,7 +40,12 @@ def home():
 
     # Certifique-se de que o menu foi encontrado
     if not menu:
+        # Registrar log de falha ao acessar a página inicial
+        registrar_log(miniAppId=None, logAcao="Acesso à Página Inicial", logResultadoAcao=False)
         return "Menu não encontrado", 404
+
+    # Registrar log de sucesso ao acessar a página inicial
+    registrar_log(miniAppId=None, logAcao="Acesso à Página Inicial", logResultadoAcao=True)
 
     # Renderizar o template com a variável `menu`
     return render_template('home.html', menu=menu)
@@ -49,5 +54,8 @@ def home():
 @login_required
 def extend_session():
     session.modified = True  # Atualiza a sessão para estender o tempo de validade
-    return '', 204  # Retorna resposta sem conteúdo
 
+    # Registrar log de extensão da sessão
+    registrar_log(miniAppId=None, logAcao="Extensão de Sessão", logResultadoAcao=True)
+
+    return '', 204  # Retorna resposta sem conteúdo
