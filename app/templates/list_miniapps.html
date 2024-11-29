@@ -22,6 +22,7 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Ícone</th>
+                <th>Link</th>
                 <th>Menu</th>
                 <th>Ações</th>
             </tr>
@@ -32,6 +33,9 @@
                 <td>{{ miniapp.miniAppId }}</td>
                 <td>{{ miniapp.miniAppNome }}</td>
                 <td>{{ miniapp.miniAppIcon }}</td>
+                <td>
+                    <a href="{{ miniapp.miniAppLink }}" target="_blank">{{ miniapp.miniAppLink }}</a>
+                </td>
                 <td>{{ miniapp.menu.menuNome }}</td>
                 <td>
                     <div class="d-flex align-items-center">

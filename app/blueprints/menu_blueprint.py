@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from app.forms import MenuForm
-from app.models import Menu
+from app.models import Menu, MiniApp
 from app import db
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_required
@@ -84,12 +84,15 @@ def delete_menu(menu_id):
 @menu_bp.route('/<menu_template>')
 @login_required
 def dynamic_menu(menu_template):
-    # Recupera o menu correspondente ao menu_template
-    menu = Menu.query.filter_by(menuTemplate=menu_template).first()
+    # Obter o menu com base no template
+    menu = Menu.query.filter_by(menuTemplate=menu_template).first_or_404()
+
+    # Obter os miniapps associados ao menu
+    mini_apps = MiniApp.query.filter_by(menuId=menu.menuId).all()
 
     if not menu:
         abort(404)  # Retorna um erro 404 se o menu não for encontrado
 
     # Renderiza o template e passa o menu para o contexto
-    return render_template(f'{menu.menuTemplate}.html', menu=menu)
+    return render_template(f"{menu_template}.html", menu=menu, mini_apps=mini_apps)
 

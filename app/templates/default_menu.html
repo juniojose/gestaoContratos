@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ menu.menuNome }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h4>{{ menu.menuNome }}</h4>
+    <hr class="line-fine">
+
+    <div class="row no-gutters" id="sortable">
+        {% for mini_app in mini_apps %}
+        <div class="mini-app">
+            <a href="{{ url_for(mini_app.miniAppLink) }}" class="card p-3 draggable text-decoration-none">
+                <h5 class="mt-2">{{ mini_app.miniAppNome }}</h5>
+                <i class="{{ mini_app.miniAppIcon }} icon-bottom-left"></i>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

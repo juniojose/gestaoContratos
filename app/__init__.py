@@ -88,8 +88,8 @@ def register_blueprints(app):
     from .blueprints.menu_blueprint import menu_bp
     app.register_blueprint(menu_bp, url_prefix='/menus')
 
-    from .blueprints.miniapp_blueprint import miniapp_bp
-    app.register_blueprint(miniapp_bp, url_prefix='/miniapp')
+    from .blueprints.miniapp_blueprint import miniapps_bp
+    app.register_blueprint(miniapps_bp, url_prefix='/miniapps')
 
     from .blueprints.perfispermissoes_blueprint import perfispermissoes_bp
     app.register_blueprint(perfispermissoes_bp, url_prefix='/perfisPermissoes')

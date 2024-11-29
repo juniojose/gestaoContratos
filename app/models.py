@@ -81,6 +81,7 @@ class MiniApp(db.Model):
     miniAppId = db.Column(db.Integer, primary_key=True)
     miniAppNome = db.Column(db.String(100), unique=True, nullable=False)
     miniAppIcon = db.Column(db.String(40), nullable=False)
+    miniAppLink = db.Column(db.String(200), nullable=True)  # Temporariamente nullable
     menuId = db.Column(db.Integer, db.ForeignKey('menus.menuId'), nullable=False)
     miniAppDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
     miniAppDataUltimaAtualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, SubmitField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, Email, ValidationError, EqualTo, Length, NumberRange
 from app.models import Usuario, Status, Fazenda, UsuariosPerfis, Menu, MiniApp, PerfisPermissoes
+from wtforms_sqlalchemy.fields import QuerySelectField
 
 class StatusForm(FlaskForm):
     statusDescricao = StringField('Descrição do Status', validators=[DataRequired(), Length(max=100)])
@@ -94,10 +95,17 @@ class MenuForm(FlaskForm):
             raise ValidationError("Já existe um template com esse nome.")
 
 class MiniAppForm(FlaskForm):
-    miniAppNome = StringField('Nome do MiniApp', validators=[DataRequired(), Length(max=100)])
-    miniAppIcon = StringField('Ícone do MiniApp', validators=[DataRequired(), Length(max=40)])
-    menuId = SelectField('Menu', choices=[], coerce=int, validators=[DataRequired()])
-    submit = SubmitField('Salvar')
+    miniAppNome = StringField("Nome do MiniApp", validators=[DataRequired()])
+    miniAppIcon = StringField("Ícone do MiniApp", validators=[DataRequired()])
+    miniAppLink = StringField("Link do MiniApp", validators=[DataRequired()])
+    menuId = QuerySelectField(
+        "Menu",
+        query_factory=lambda: Menu.query.order_by(Menu.menuNome).all(),
+        get_label="menuNome",
+        allow_blank=False,
+        validators=[DataRequired()]
+    )
+    submit = SubmitField("Salvar")
 
 class PerfisPermissoesForm(FlaskForm):
     perfilId = SelectField('Perfil', choices=[], coerce=int, validators=[DataRequired()])
