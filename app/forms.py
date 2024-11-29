@@ -136,3 +136,17 @@ class EscolhaTemaForm(FlaskForm):
         validators=[DataRequired()]
     )
     submit = SubmitField('Salvar')
+
+from flask_wtf import FlaskForm
+from wtforms import SubmitField, SelectMultipleField, widgets
+from wtforms.validators import DataRequired
+
+class EscolherMiniAppsHomeForm(FlaskForm):
+    miniapps = SelectMultipleField(
+        'MiniApps',
+        coerce=int,
+        option_widget=widgets.CheckboxInput(),
+        widget=widgets.ListWidget(prefix_label=False),
+        validators=[DataRequired()]
+    )
+    submit = SubmitField('Salvar Preferências')

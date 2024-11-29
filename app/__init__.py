@@ -105,3 +105,6 @@ def register_blueprints(app):
 
     from .blueprints.temas_blueprint import temas_bp
     app.register_blueprint(temas_bp, url_prefix='/temas')
+
+    from .blueprints.preferencias_blueprint import preferencias_bp
+    app.register_blueprint(preferencias_bp, url_prefix='/preferencias')

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4 p-4" style="background-color: #f7f7f7; border-radius: 8px;">
+    <h4 class="form-title">{{ title }}</h4>
+    <hr class="line-fine">
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-4">
+            <label for="miniapps">Selecione os MiniApps para exibir na Home:</label>
+            <ul>
+                {% for choice in form.miniapps.choices %}
+                <li>
+                    <label>
+                        <input type="checkbox" name="{{ form.miniapps.name }}" value="{{ choice[0] }}"
+                            {% if choice[0] in form.miniapps.data %}checked{% endif %}>
+                        {{ choice[1] }}
+                    </label>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-save"></i> Salvar
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

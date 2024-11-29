@@ -17,6 +17,18 @@ main {
     align-items: flex-start;
 }
 
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+button[type="submit"]:hover {
+    background-color: rgb(0, 90, 60); /* Uma cor ligeiramente mais escura para o hover */
+    transition: background-color 0.3s ease; /* Suaviza a mudança de cor */
+}
+
+
 /****************************************************/
 /* Cabeçalho */
 /****************************************************/
