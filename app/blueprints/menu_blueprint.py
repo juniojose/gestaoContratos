@@ -4,6 +4,7 @@ from app.models import Menu, MiniApp
 from app import db
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_required
+from flask_login import current_user
 
 menu_bp = Blueprint('menus', __name__, template_folder='templates')
 
@@ -81,18 +82,33 @@ def delete_menu(menu_id):
     flash("Menu excluído com sucesso!", "success")
     return redirect(url_for("menus.list_menus"))
 
-@menu_bp.route('/<menu_template>')
+from app.models import MiniApp, PerfisPermissoes, UsuariosPermissoes
+
+@menu_bp.route("/<menu_template>", methods=["GET"])
 @login_required
 def dynamic_menu(menu_template):
-    # Obter o menu com base no template
     menu = Menu.query.filter_by(menuTemplate=menu_template).first_or_404()
 
-    # Obter os miniapps associados ao menu
-    mini_apps = MiniApp.query.filter_by(menuId=menu.menuId).all()
+    # Recuperar todos os MiniApps do menu
+    all_mini_apps = MiniApp.query.filter_by(menuId=menu.menuId).all()
 
-    if not menu:
-        abort(404)  # Retorna um erro 404 se o menu não for encontrado
+    # Filtrar MiniApps com base nas permissões do usuário
+    allowed_mini_apps = []
+    for mini_app in all_mini_apps:
+        # Verifica se o MiniApp está nas permissões do perfil do usuário
+        perfil_permissao = any(
+            permissao.miniAppId == mini_app.miniAppId
+            for permissao in current_user.perfil.perfisPermissoes
+        )
 
-    # Renderiza o template e passa o menu para o contexto
-    return render_template(f"{menu_template}.html", menu=menu, mini_apps=mini_apps)
+        # Verifica se o MiniApp está nas permissões diretas do usuário
+        usuario_permissao = any(
+            permissao.miniAppId == mini_app.miniAppId
+            for permissao in current_user.usuariosPermissoes
+        )
 
+        # Adiciona o MiniApp se o usuário tem permissão
+        if perfil_permissao or usuario_permissao:
+            allowed_mini_apps.append(mini_app)
+
+    return render_template("default_menu.html", menu=menu, mini_apps=allowed_mini_apps)
