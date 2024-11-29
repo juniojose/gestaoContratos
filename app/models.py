@@ -131,3 +131,24 @@ class UsuarioLog(db.Model):
     # Relacionamentos
     usuario = db.relationship('Usuario', backref=db.backref('logs', lazy=True))
     miniApp = db.relationship('MiniApp', backref=db.backref('logs', lazy=True))
+
+from datetime import datetime
+from . import db
+
+class UsuariosPreferencias(db.Model):
+    __tablename__ = 'usuariosPreferencias'
+
+    preferenciaId = db.Column(db.Integer, primary_key=True)
+    usuarioId = db.Column(db.Integer, db.ForeignKey('usuarios.usuarioId'), nullable=False)
+    preferenciaTema = db.Column(db.String(30), nullable=False, default='Default')
+    preferenciaPosicaoBotoes = db.Column(db.JSON, nullable=True)
+    preferenciaMiniAppsHome = db.Column(db.JSON, nullable=True)  # MiniApps exibidos na Home
+    preferenciaDataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
+    preferenciaDataUltimaAtualizacao = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+    # Relacionamento com a tabela de Usuários
+    usuario = db.relationship('Usuario', backref=db.backref('preferencias', lazy=True))

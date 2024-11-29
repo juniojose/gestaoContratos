@@ -123,3 +123,16 @@ class UsuariosPermissoesForm(FlaskForm):
     statusId = SelectField('Status', choices=[], coerce=int, validators=[DataRequired()])
     permissaoMotivo = StringField('Motivo da Permissão', validators=[Length(max=255)])
     submit = SubmitField('Salvar')
+
+class EscolhaTemaForm(FlaskForm):
+    preferenciaTema = SelectField(
+        'Escolha o Tema',
+        choices=[
+            ('Default', 'Default'),
+            ('Dark', 'Dark'),
+            ('Light', 'Light'),
+            ('Custom', 'Custom')
+        ],
+        validators=[DataRequired()]
+    )
+    submit = SubmitField('Salvar')

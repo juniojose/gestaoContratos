@@ -102,3 +102,6 @@ def register_blueprints(app):
 
     from .blueprints.logs_blueprint import logs_bp
     app.register_blueprint(logs_bp, url_prefix='/logs')
+
+    from .blueprints.temas_blueprint import temas_bp
+    app.register_blueprint(temas_bp, url_prefix='/temas')
